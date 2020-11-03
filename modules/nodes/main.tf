@@ -23,6 +23,5 @@ resource "aws_eks_node_group" "node" {
       ec2_ssh_key               = var.key_pair
       source_security_group_ids = var.security_groups
     }
-  }
 }
 
