@@ -23,6 +23,11 @@ variable "iam_role_node" { #used
   description = "iam role of node"
 }
 
+variable "node_role_arn" { #used
+  default     = "arn:aws:iam::617638789148:role/eks-node"
+  description = "iam role of node"
+}
+
 variable "vpc_id" { #used
   default     = "vpc-0cf43de42bea39c3d"
   description = "ID of the VPC where to create the cluster resources."
@@ -80,6 +85,11 @@ variable "node_bootstrap_arguments" { #used
 
 variable "node_disk_size" { #used
   default     = 20
+  description = "The root device size for the worker nodes."
+}
+
+variable "node_desired_size" { #used
+  default     = 1
   description = "The root device size for the worker nodes."
 }
 

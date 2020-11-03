@@ -1,39 +1,28 @@
-resource "aws_launch_configuration" "node" {
-  iam_instance_profile        = var.instance_profile
-  image_id                    = var.ami_id
-  instance_type               = var.instance_type
-  name_prefix                 = var.name
-  key_name                    = var.key_pair
-  associate_public_ip_address = false
-  security_groups             = var.security_groups
-  user_data_base64            = base64encode(local.user_data)
-
-  root_block_device {
-    volume_size = var.disk_size
-  }
+resource "aws_eks_node_group" "node" {
+  node_group_name = var.name
 
   lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_autoscaling_group" "node" {
-  launch_configuration = aws_launch_configuration.node.id
-  max_size             = var.max_size
-  min_size             = var.min_size
-  name                 = var.name
-  vpc_zone_identifier  = var.subnet_ids
-
-  tag {
-    key                 = "Name"
-    value               = var.name
-    propagate_at_launch = true
+    create_before_destroy = false
+    ignore_changes        = [scaling_config[0].desired_size]
   }
 
-  tag {
-    key                 = "kubernetes.io/cluster/${var.cluster_name}"
-    value               = "owned"
-    propagate_at_launch = true
+  # From here to end of resource should be identical in both node groups
+  cluster_name    = var.cluster_name
+  node_role_arn   = var.node_role_arn
+  subnet_ids      = var.subnet_ids
+  disk_size       = var.disk_size
+  instance_types  = var.instance_type
+  ami_type        = var.ami_id
+
+  scaling_config {
+    desired_size = var.desired_size
+    max_size     = var.max_size
+    min_size     = var.min_size
+  }
+    dynamic "remote_access" {
+      ec2_ssh_key               = var.key_pair
+      source_security_group_ids = var.security_groups
+    }
   }
 }
 

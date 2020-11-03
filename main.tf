@@ -34,9 +34,11 @@ module "nodes" {
   instance_type       = var.node_instance_type
   user_data           = var.node_user_data
   bootstrap_arguments = var.node_bootstrap_arguments
+  desired_size        = var.node_desired_size
   min_size            = var.node_min_size
   max_size            = var.node_max_size
   key_pair            = var.key_pair
   disk_size           = var.node_disk_size
+  node_role_arn       = var.node_role_arn
 }
 
