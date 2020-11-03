@@ -20,23 +20,23 @@ module "cluster" {
 
 }
 
-# module "nodes" {
-#   source = "./modules/nodes"
+module "nodes" {
+  source = "./modules/nodes"
 
-#   name                = var.name
-#   cluster_name        = module.cluster.name
-#   cluster_endpoint    = module.cluster.endpoint
-#   cluster_certificate = module.cluster.certificate
-#   security_groups     = [module.cluster.node_security_group]
-#   instance_profile    = module.cluster.node_instance_profile #balikan mo
-#   subnet_ids          = flatten([var.cluster_subnet_ids])
-#   ami_id              = var.node_ami_id
-#   instance_type       = var.node_instance_type
-#   user_data           = var.node_user_data
-#   bootstrap_arguments = var.node_bootstrap_arguments
-#   min_size            = var.node_min_size
-#   max_size            = var.node_max_size
-#   key_pair            = var.key_pair
-#   disk_size           = var.node_disk_size
-# }
+  name                = var.name
+  cluster_name        = module.cluster.name
+  cluster_endpoint    = module.cluster.endpoint
+  cluster_certificate = module.cluster.certificate
+  security_groups     = [module.cluster.node_security_group]
+  instance_profile    = module.cluster.node_instance_profile #balikan mo
+  subnet_ids          = flatten([var.cluster_subnet_ids])
+  ami_id              = var.node_ami_id
+  instance_type       = var.node_instance_type
+  user_data           = var.node_user_data
+  bootstrap_arguments = var.node_bootstrap_arguments
+  min_size            = var.node_min_size
+  max_size            = var.node_max_size
+  key_pair            = var.key_pair
+  disk_size           = var.node_disk_size
+}
 
