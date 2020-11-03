@@ -3,7 +3,7 @@ locals {
 }
 
 locals {
-  ng_needs_remote_access = local.have_ssh_key && ! local.use_launch_template
+  ng_needs_remote_access = local.have_ssh_key
   ng = {
     # Configure remote access via Launch Template if we are using one
     need_remote_access        = local.ng_needs_remote_access
