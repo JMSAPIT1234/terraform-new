@@ -28,7 +28,6 @@ module "nodes" {
   cluster_endpoint    = module.cluster.endpoint
   cluster_certificate = module.cluster.certificate
   security_groups     = [module.cluster.node_security_group]
-  instance_profile    = module.cluster.node_instance_profile #balikan mo
   subnet_ids          = flatten([var.cluster_subnet_ids])
   ami_id              = var.node_ami_id
   instance_type       = var.node_instance_type
