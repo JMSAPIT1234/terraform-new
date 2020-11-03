@@ -13,10 +13,10 @@ output "cluster_certificate" {
   description = "Certificate used to authenticate to the Kubernetes Controle Plane."
 }
 
-output "node_role" {
-  value       = module.cluster.node_role
-  description = "IAM Role which has the required policies to add the node to the cluster."
-}
+# output "node_role" {
+#   value       = module.cluster.node_role
+#   description = "IAM Role which has the required policies to add the node to the cluster."
+# }
 
 # output "node_role_arn" {
 #   value       = module.cluster.node_role_arn
