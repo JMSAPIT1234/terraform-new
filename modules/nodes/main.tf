@@ -26,7 +26,6 @@ resource "aws_eks_node_group" "node" {
   subnet_ids      = var.subnet_ids
   disk_size       = var.disk_size
   instance_types  = var.instance_type
-  ami_id          = var.ami_id
 
   scaling_config {
     desired_size = var.desired_size
