@@ -112,3 +112,9 @@ variable "aws_auth" {
   default     = ""
   description = "Grant additional AWS users or roles the ability to interact with the EKS cluster."
 }
+
+variable "ec2_ssh_key" {
+  type        = string
+  description = "SSH key pair name to use to access the worker nodes"
+  default     = "jmsandbox"
+}
