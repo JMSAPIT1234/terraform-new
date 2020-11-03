@@ -1,3 +1,17 @@
+locals {
+  have_ssh_key = var.ec2_ssh_key != null && var.ec2_ssh_key != ""
+}
+
+locals {
+  ng_needs_remote_access = local.have_ssh_key && ! local.use_launch_template
+  ng = {
+    # Configure remote access via Launch Template if we are using one
+    need_remote_access        = local.ng_needs_remote_access
+    ec2_ssh_key               = local.have_ssh_key ? var.ec2_ssh_key : "none"
+    source_security_group_ids = local.ng_needs_remote_access ? var.security_groups : []
+  }
+}
+
 resource "aws_eks_node_group" "node" {
   node_group_name = var.name
 
@@ -19,20 +33,6 @@ resource "aws_eks_node_group" "node" {
     max_size     = var.max_size
     min_size     = var.min_size
   }
-
-locals {
-  have_ssh_key = var.ec2_ssh_key != null && var.ec2_ssh_key != ""
-}
-
-locals {
-  ng_needs_remote_access = local.have_ssh_key && ! local.use_launch_template
-  ng = {
-    # Configure remote access via Launch Template if we are using one
-    need_remote_access        = local.ng_needs_remote_access
-    ec2_ssh_key               = local.have_ssh_key ? var.ec2_ssh_key : "none"
-    source_security_group_ids = local.ng_needs_remote_access ? var.security_groups : []
-  }
-}
 
   dynamic "remote_access" {
     for_each = local.ng.need_remote_access ? ["true"] : []
