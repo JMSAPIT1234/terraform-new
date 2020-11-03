@@ -1,5 +1,5 @@
 variable "name" { #used
-  type        = "devops_eks"
+  default        = "devops_eks"
   description = "Name to be used on all the resources as identifier."
 }
 
