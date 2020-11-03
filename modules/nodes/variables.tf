@@ -1,5 +1,5 @@
 variable "name" {
-  type        = "devops_eks"
+  type        = string
   description = "Unique identifier for the Node Group."
 }
 
