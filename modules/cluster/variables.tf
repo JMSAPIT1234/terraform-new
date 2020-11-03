@@ -17,6 +17,16 @@ variable "subnet_ids" {
   description = "A list of VPC subnet IDs which the cluster uses."
 }
 
+variable "iam_role_cluster" { #used
+  default     = "arn:aws:iam::617638789148:role/eksclusterrole"
+  description = "iam role of cluster"
+}
+
+variable "iam_role_node" { #used
+  default     = "eks-node"
+  description = "iam role of node"
+}
+
 variable "workstation_cidr" {
   default     = []
   description = "CIDR blocks from which to allow inbound traffic to the Kubernetes control plane."
