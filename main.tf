@@ -6,6 +6,7 @@ module "cluster" {
   source = "./modules/cluster"
 
   name             = var.name
+  region           = var.region
   eks_version      = var.eks_version
   vpc_id           = var.vpc_id
   subnet_ids       = flatten([var.cluster_subnet_ids])

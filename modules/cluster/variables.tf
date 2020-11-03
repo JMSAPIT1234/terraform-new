@@ -7,6 +7,11 @@ variable "eks_version" {
   description = "Kubernetes version to use for the cluster."
 }
 
+variable "region" { #used
+  default     = "ap-southeast-1"
+  description = "Region"
+}
+
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC where to create the cluster resources."
