@@ -37,6 +37,11 @@ variable "instance_type" {
   description = "EC2 instance type for the node instances."
 }
 
+variable "node_role_arn" { #used
+  default     = "arn:aws:iam::617638789148:role/eks-node"
+  description = "iam role of node"
+}
+
 variable "instance_profile" {
   type        = string
   description = "IAM Instance Profile which has the required policies to add the node to the cluster."
@@ -56,6 +61,11 @@ variable "bootstrap_arguments" {
 }
 
 variable "disk_size" {
+  default     = ""
+  description = "The root device size for the worker nodes."
+}
+
+variable "desired_size" {
   default     = ""
   description = "The root device size for the worker nodes."
 }

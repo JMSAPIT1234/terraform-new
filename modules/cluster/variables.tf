@@ -52,6 +52,11 @@ variable "permissions_boundary" {
   description = "If provided, all IAM roles will be created with this permissions boundary attached."
 }
 
+variable "node_role_arn" { #used
+  default     = "arn:aws:iam::617638789148:role/eks-node"
+  description = "iam role of node"
+}
+
 variable "cluster_private_access" {
   description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled."
 }
@@ -60,3 +65,7 @@ variable "cluster_public_access" {
   description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled."
 }
 
+variable "desired_size" {
+  default     = ""
+  description = "The root device size for the worker nodes."
+}
