@@ -114,5 +114,22 @@ resource "aws_eks_cluster" "cluster" {
     endpoint_private_access = var.cluster_private_access
     endpoint_public_access  = var.cluster_public_access
   }
+
+  encryption_config {
+    resources = ["secrets"]
+    provider {
+      key_arn = aws_kms_key.eks.arn
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region}"
+  }
 }
+
+resource "aws_kms_key" "eks" {
+  description = "EKS Secret Encryption Key"
+}
+
+
 
