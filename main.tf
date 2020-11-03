@@ -13,6 +13,7 @@ module "cluster" {
   ssh_cidr         = var.ssh_cidr
   aws_auth         = var.aws_auth #not_used
   iam_role_cluster = var.iam_role_cluster
+  iam_role_node = var.iam_role_node
   cluster_private_access = var.cluster_private_access
   cluster_public_access = var.cluster_public_access
 

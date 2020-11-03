@@ -13,10 +13,10 @@ output "certificate" {
   description = "Certificate used to authenticate to the Kubernetes Controle Plane."
 }
 
-output "node_role" {
-  value       = aws_iam_role.node.name
-  description = "IAM Role which has the required policies to add the node to the cluster."
-}
+# output "node_role" {
+#   value       = aws_iam_role.node.name
+#   description = "IAM Role which has the required policies to add the node to the cluster."
+# }
 
 output "cluster_security_group" {
   value       = aws_security_group.cluster.id
