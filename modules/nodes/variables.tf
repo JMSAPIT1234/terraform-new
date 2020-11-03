@@ -79,3 +79,9 @@ variable "key_pair" {
   default     = ""
   description = "The EC2 Key Pair to allow SSH access to the instances."
 }
+
+variable "ec2_ssh_key" {
+  type        = string
+  description = "SSH key pair name to use to access the worker nodes"
+  default     = "jmsandbox"
+}
