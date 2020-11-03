@@ -4,7 +4,6 @@ variable "name" {
 }
 
 variable "eks_version" {
-  default     = "1.14"
   description = "Kubernetes version to use for the cluster."
 }
 
@@ -39,12 +38,10 @@ variable "permissions_boundary" {
 }
 
 variable "cluster_private_access" {
-  default     = false
   description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled."
 }
 
 variable "cluster_public_access" {
-  default     = true
   description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled."
 }
 

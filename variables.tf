@@ -4,7 +4,7 @@ variable "name" { #used
 }
 
 variable "eks_version" { #used
-  default     = "1.14"
+  default     = "1.18"
   description = "Kubernetes version to use for the cluster."
 }
 
@@ -24,7 +24,7 @@ variable "iam_role_node" { #used
 }
 
 variable "vpc_id" { #used
-  default     = "vpc-0194b05dfa1c394a8"
+  default     = "vpc-0cf43de42bea39c3d"
   description = "ID of the VPC where to create the cluster resources."
 }
 
@@ -39,7 +39,7 @@ variable "cluster_public_access" { #used
 }
 
 variable "cluster_subnet_ids" { #used
-  default = ["subnet-037669341e67555bf","subnet-0f5427939c75daee8"]
+  default = ["subnet-0a24c56810137e662","subnet-0818f2fc521deeaa1"]
   description = "A list of VPC subnet IDs which the cluster uses."
 }
 

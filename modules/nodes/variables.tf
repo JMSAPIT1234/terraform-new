@@ -34,7 +34,6 @@ variable "ami_id" {
 }
 
 variable "instance_type" {
-  default     = "m5.large"
   description = "EC2 instance type for the node instances."
 }
 
@@ -44,12 +43,10 @@ variable "instance_profile" {
 }
 
 variable "min_size" {
-  default     = 1
   description = "Minimum size of Node Group ASG."
 }
 
 variable "max_size" {
-  default     = 2
   description = "Maximum size of Node Group ASG."
 }
 
