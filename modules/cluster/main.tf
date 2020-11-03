@@ -123,7 +123,7 @@ resource "aws_eks_cluster" "cluster" {
   }
 
   provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --name ${var.cluster_name} --region ${var.region}"
+    command = "aws eks update-kubeconfig --name ${var.name} --region ${var.region}"
   }
 }
 
