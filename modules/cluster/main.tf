@@ -16,10 +16,10 @@ resource "local_file" "aws_auth" {
   depends_on = [null_resource.output]
 }
 
-resource "aws_kms_key" "platform-gitlab-kms" {
-  description             = "platform-gitlab-kms"
-  policy                  = "${data.aws_iam_policy_document.platform-gitlab-kms-policy.json}"
-}
+# resource "aws_kms_key" "platform-gitlab-kms" {
+#   description             = "platform-gitlab-kms"
+#   policy                  = "${data.aws_iam_policy_document.platform-gitlab-kms-policy.json}"
+# }
 
 resource "aws_eks_cluster" "cluster" {
   name     = var.name
@@ -36,7 +36,8 @@ resource "aws_eks_cluster" "cluster" {
   encryption_config {
     resources = ["secrets"]
     provider {
-      key_arn = aws_kms_key.platform-gitlab-kms.arn
+      # key_arn = aws_kms_key.platform-gitlab-kms.arn
+      key_arn = "arn:aws:kms:me-south-1:414582846745:key/40160713-0135-4592-ad32-586ff0ed947f"
     }
   }
 

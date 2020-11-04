@@ -1,5 +1,5 @@
 variable "name" { #used
-  default        = "devops_eks"
+  default        = "devops_eks_terra"
   description = "Name to be used on all the resources as identifier."
 }
 
@@ -9,32 +9,37 @@ variable "eks_version" { #used
 }
 
 variable "region" { #used
-  default     = "ap-southeast-1"
+  default     = "me-south-1"
   description = "Region"
 }
 
 variable "iam_role_cluster" { #used
-  default     = "arn:aws:iam::617638789148:role/eksclusterrole"
+  default     = "arn:aws:iam::414582846745:role/eks-admin-role"
   description = "iam role of cluster"
 }
 
 variable "node_role_arn" { #used
-  default     = "arn:aws:iam::617638789148:role/eks-node"
+  default     = "arn:aws:iam::414582846745:role/devops-eks-node"
   description = "iam role of node"
 }
 
 variable "cluster_arn" { #used
-  default     = "arn:aws:iam::617638789148:role/eks-node"
+  default     = "arn:aws:iam::414582846745:cluster"
+  description = "cluster arn"
+}
+
+variable "admin_arn" { #used
+  default     = "arn:aws:iam::414582846745:role/devops-eks-admin"
   description = "cluster arn"
 }
 
 variable "security_group" {
-  default     = []
+  default     = ["sg-01afdf11c8d8b02ae","sg-0034b6097b20f2934"]
   description = "A list of security groups which the cluster uses."
 }
 
 variable "vpc_id" { #used
-  default     = "vpc-02f52a3bfdee6246d"
+  default     = "vpc-05158173739022765"
   description = "ID of the VPC where to create the cluster resources."
 }
 
@@ -44,23 +49,23 @@ variable "cluster_private_access" { #used
 }
 
 variable "cluster_public_access" { #used
-  default     = true
+  default     = false
   description = "Indicates whether or not the Amazon EKS public API server endpoint is enabled."
 }
 
 variable "cluster_subnet_ids" { #used
-  default = ["subnet-0ac03ded77f7cefe4","subnet-0d2a27f4563c29cf1"]
+  default = ["subnet-0d1b60c7d94619770","subnet-0369e6e1dde1c241e"]
   description = "A list of VPC subnet IDs which the cluster uses."
 }
 
 variable "node_ami_id" { #used
-  default     = "ami-0c8e97a27be37adfd"
+  default     = "ami-08310b5f38c1de6c2"
   description = "AMI id for the node instances."
 }
 
 variable "node_instance_type" { #used
   type        = list(string)
-  default     = ["t2.medium"]
+  default     = ["t2.large"]
   description = "Instance type of the worker node."
 }
 
@@ -90,6 +95,6 @@ variable "workstation_cidr" { #used
 }
 
 variable "key_pair" { #used
-  default     = "jmsandbox"
+  default     = "devops-eks-key"
   description = "Adds an EC2 Key Pair to the cluster nodes."
 }

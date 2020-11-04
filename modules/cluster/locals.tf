@@ -31,18 +31,22 @@ KUBECONFIG
 
 
   aws_auth = <<AWSAUTH
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: aws-auth
-#   namespace: kube-system
-# data:
-#   mapRoles: |
-#     - rolearn: ${aws_iam_role.node.arn}
-#       username: system:node:{{EC2PrivateDNSName}}
-#       groups:
-#         - system:bootstrappers
-#         - system:nodes
-# ${var.aws_auth}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: ${aws_iam_role.node.arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    - userarn: ${admin_arn}
+      username: admin
+      groups:
+        - system:masters
 AWSAUTH
 }
