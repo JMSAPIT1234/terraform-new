@@ -32,7 +32,7 @@ resource "aws_security_group" "workstation-ssh-platform" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.workstation_cidr]
+    cidr_blocks = flatten([var.workstation_cidr])
   }
 
   egress {
