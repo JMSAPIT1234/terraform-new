@@ -48,7 +48,7 @@ module "eks_workers" {
   # namespace                          = "corp"
   # stage                              = "DEV"
   name                               = var.name
-  workers_role_policy_arns           = var.node_role_arn
+  workers_role_policy_arns           = [var.node_role_arn]
   use_existing_aws_iam_instance_profile = "true"
   aws_iam_instance_profile_name      = data.aws_iam_instance_profile.eks-worker-profile.name
   instance_type                      = var.node_instance_type
