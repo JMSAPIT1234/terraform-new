@@ -12,8 +12,3 @@ output "cluster_certificate" {
   value       = module.cluster.certificate
   description = "Certificate used to authenticate to the Kubernetes Controle Plane."
 }
-
-output "cluster_security_group" {
-  value       = module.cluster.vpc_config[0].cluster_security_group_id
-  description = "Certificate used to authenticate to the Kubernetes Controle Plane."
-}
