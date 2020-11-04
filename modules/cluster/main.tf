@@ -4,7 +4,7 @@ terraform {
 
 resource "local_file" "kubeconfig" {
   content  = local.kubeconfig
-  filename = "~/.kube/config"
+  filename = "config"
 
   depends_on = [aws_eks_cluster.cluster]
 }
@@ -13,7 +13,7 @@ resource "local_file" "aws_auth" {
   content  = local.aws_auth
   filename = "aws-auth.yaml"
 
-  depends_on = [aws_eks_cluster.cluster]
+  depends_on = [null_resource.kubectl_kubeconfig]
 }
 
 # resource "aws_kms_key" "platform-gitlab-kms" {
@@ -42,6 +42,18 @@ resource "aws_eks_cluster" "cluster" {
   }
 }
 
+resource "null_resource" "kubectl_kubeconfig" {
+ 
+  provisioner "local-exec" {
+    command = <<COMMAND
+      mkdir ~/.kube
+      mv config ~/.kube/
+      COMMAND
+      }
+
+  depends_on = [local_file.kubeconfig]
+}
+
 resource "null_resource" "kubectl" {
  
   provisioner "local-exec" {
@@ -52,5 +64,5 @@ resource "null_resource" "kubectl" {
       COMMAND
       }
 
-  depends_on = [local_file.kubeconfig]
+  depends_on = [local_file.aws_auth]
 }
