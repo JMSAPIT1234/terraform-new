@@ -29,7 +29,7 @@ variable "node_role_arn" { #used
 }
 
 variable "vpc_id" { #used
-  default     = "vpc-0cf43de42bea39c3d"
+  default     = "vpc-02f52a3bfdee6246d"
   description = "ID of the VPC where to create the cluster resources."
 }
 
@@ -44,7 +44,7 @@ variable "cluster_public_access" { #used
 }
 
 variable "cluster_subnet_ids" { #used
-  default = ["subnet-0a24c56810137e662","subnet-0818f2fc521deeaa1"]
+  default = ["subnet-0ac03ded77f7cefe4","subnet-0d2a27f4563c29cf1"]
   description = "A list of VPC subnet IDs which the cluster uses."
 }
 
@@ -60,7 +60,7 @@ variable "node_ami_id" { #used
 
 variable "node_instance_type" { #used
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t2.medium"]
   description = "Instance type of the worker node."
 }
 

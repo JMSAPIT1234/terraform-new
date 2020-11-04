@@ -130,6 +130,3 @@ resource "aws_eks_cluster" "cluster" {
 resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key"
 }
-
-
-

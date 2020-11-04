@@ -8,7 +8,7 @@ variable "eks_version" {
 }
 
 variable "region" { #used
-  default     = "ap-southeast-1"
+  default     = ""
   description = "Region"
 }
 
@@ -23,12 +23,12 @@ variable "subnet_ids" {
 }
 
 variable "iam_role_cluster" { #used
-  default     = "arn:aws:iam::617638789148:role/eksclusterrole"
+  default     = ""
   description = "iam role of cluster"
 }
 
 variable "iam_role_node" { #used
-  default     = "eks-node"
+  default     = ""
   description = "iam role of node"
 }
 
@@ -53,7 +53,7 @@ variable "permissions_boundary" {
 }
 
 variable "node_role_arn" { #used
-  default     = "arn:aws:iam::617638789148:role/eks-node"
+  default     = ""
   description = "iam role of node"
 }
 

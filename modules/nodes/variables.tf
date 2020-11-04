@@ -44,7 +44,7 @@ variable "node_role_arn" { #used
 
 variable "instance_profile" {
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = [""]
   description = "IAM Instance Profile which has the required policies to add the node to the cluster."
 }
 
