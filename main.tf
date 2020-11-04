@@ -10,7 +10,7 @@ module "cluster" {
   source = "./modules/cluster"
 
   name             = var.name
-  cluster_arn      = var.cluster_arn
+  cluster_arn      = "${var.cluster_arn}/${var.name}"
   region           = var.region
   eks_version      = var.eks_version
   vpc_id           = var.vpc_id
