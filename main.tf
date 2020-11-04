@@ -2,16 +2,19 @@ provider "aws" {
   region = var.region
 }
 
+data "aws_iam_instance_profile" "eks-worker-profile" {
+  name = "eks-nodegroup-role"
+}
+
 module "cluster" {
   source = "./modules/cluster"
 
   name             = var.name
+  cluster_arn      = var.cluster_arn
   region           = var.region
   eks_version      = var.eks_version
   vpc_id           = var.vpc_id
   subnet_ids       = flatten([var.cluster_subnet_ids])
-  workstation_cidr = [var.workstation_cidr]
-  ssh_cidr         = var.ssh_cidr
   aws_auth         = var.aws_auth #not_used
   iam_role_cluster = var.iam_role_cluster
   iam_role_node = var.iam_role_node
@@ -19,24 +22,38 @@ module "cluster" {
   cluster_public_access = var.cluster_public_access
 }
 
-module "nodes" {
-  source = "./modules/nodes"
+module "eks_workers" {
+  source                             = "git::https://github.com/cloudposse/terraform-aws-eks-workers.git?ref=0.15.2"
+  namespace                          = "corp"
+  stage                              = "DEV"
+  name                               = var.name
+  workers_role_policy_arns           = var.node_role_arn
+  use_existing_aws_iam_instance_profile = "true"
+  aws_iam_instance_profile_name      = data.aws_iam_instance_profile.eks-worker-profile.name
+  instance_type                      = var.node_instance_type
+  use_custom_image_id                = "true"
+  image_id                           = var.node_ami_id
+  key_name                           = var.key_pair
+  allowed_security_groups            = aws_security_group.workstation-ssh-platform.id
+  vpc_id                             = var.vpc_id
+  subnet_ids                         = flatten([local.node_subnet_ids])
+  health_check_type                  = "EC2"  
+  enable_monitoring                  = "false"
+  min_size                           = var.node_min_size
+  max_size                           = var.node_max_size
+  cluster_name                       = module.cluster.name
+  cluster_endpoint                   = module.cluster.endpoint
+  cluster_certificate_authority_data = module.cluster.certificate
+  cluster_security_group_id          = module.cluster.node_security_group
+  additional_security_group_ids      = flatten([var.security_group])
+  autoscaling_group_tags = {
+    "k8s.io/cluster-autoscaler/enabled" = "true"
+    "k8s.io/cluster-autoscaler/${module.cluster.name}"    = "owned"
+  }
 
-  name                = var.name
-  cluster_name        = module.cluster.name
-  cluster_endpoint    = module.cluster.endpoint
-  cluster_certificate = module.cluster.certificate
-  security_groups     = [module.cluster.node_security_group]
-  subnet_ids          = flatten([var.cluster_subnet_ids])
-  ami_id              = var.node_ami_id
-  instance_type       = var.node_instance_type
-  user_data           = var.node_user_data
-  bootstrap_arguments = var.node_bootstrap_arguments
-  desired_size        = var.node_desired_size
-  min_size            = var.node_min_size
-  max_size            = var.node_max_size
-  key_pair            = var.key_pair
-  disk_size           = var.node_disk_size
-  node_role_arn       = var.node_role_arn
-}
+  # Auto-scaling policies and CloudWatch metric alarms
+  autoscaling_policies_enabled           = "true"
+  cpu_utilization_high_threshold_percent = 75
+  cpu_utilization_low_threshold_percent  = 30
+}  
 

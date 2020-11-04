@@ -18,14 +18,19 @@ variable "iam_role_cluster" { #used
   description = "iam role of cluster"
 }
 
-variable "iam_role_node" { #used
-  default     = "eks-node"
-  description = "iam role of node"
-}
-
 variable "node_role_arn" { #used
   default     = "arn:aws:iam::617638789148:role/eks-node"
   description = "iam role of node"
+}
+
+variable "cluster_arn" { #used
+  default     = "arn:aws:iam::617638789148:role/eks-node"
+  description = "cluster arn"
+}
+
+variable "security_group" {
+  default     = []
+  description = "A list of security groups which the cluster uses."
 }
 
 variable "vpc_id" { #used
@@ -53,11 +58,6 @@ variable "node_ami_id" { #used
   description = "AMI id for the node instances."
 }
 
-# variable "node_subnet_ids" { #used
-#   default     = []
-#   description = "A list of VPC subnet IDs which the worker nodes are using."
-# }
-
 variable "node_instance_type" { #used
   type        = list(string)
   default     = ["t2.medium"]
@@ -72,16 +72,6 @@ variable "node_min_size" { #used
 variable "node_max_size" { #used
   default     = 2
   description = "Maximum size of the worker node AutoScaling Group."
-}
-
-variable "node_user_data" { #used
-  default     = ""
-  description = "Additional user data used when bootstrapping the EC2 instance."
-}
-
-variable "node_bootstrap_arguments" { #used
-  default     = ""
-  description = "Additional arguments when bootstrapping the EKS node."
 }
 
 variable "node_disk_size" { #used
@@ -102,20 +92,4 @@ variable "workstation_cidr" { #used
 variable "key_pair" { #used
   default     = "jmsandbox"
   description = "Adds an EC2 Key Pair to the cluster nodes."
-}
-
-variable "ssh_cidr" { #used
-  default     = ""
-  description = "The CIDR blocks from which to allow incoming ssh connections to the EKS nodes."
-}
-
-variable "aws_auth" {
-  default     = ""
-  description = "Grant additional AWS users or roles the ability to interact with the EKS cluster."
-}
-
-variable "ec2_ssh_key" {
-  type        = string
-  description = "SSH key pair name to use to access the worker nodes"
-  default     = "jmsandbox"
 }

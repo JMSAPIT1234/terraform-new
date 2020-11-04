@@ -2,105 +2,23 @@ terraform {
   required_version = ">= 0.12"
 }
 
-# Cluster Security Group
-resource "aws_security_group" "cluster" {
-  name        = "${var.name}-cluster"
-  description = "Cluster communication with worker nodes"
-  vpc_id      = var.vpc_id
+resource "local_file" "kubeconfig" {
+  content  = local.kubeconfig
+  filename = "~/.kube/config"
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.name}-cluster"
-  }
+  depends_on = [null_resource.output]
 }
 
-resource "aws_security_group_rule" "cluster-ingress-workstation-https" {
-  count = length(flatten([var.workstation_cidr])) != 0 ? 1 : 0
+resource "local_file" "aws_auth" {
+  content  = local.aws_auth
+  filename = "aws-auth.yaml"
 
-  description       = "Allow workstation to communicate with the cluster API Server"
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.cluster.id
-  cidr_blocks       = flatten([var.workstation_cidr])
+  depends_on = [null_resource.output]
 }
 
-# Node Security Group
-resource "aws_security_group" "node" {
-  name        = "${var.name}-node"
-  description = "Security group for all nodes in the cluster"
-  vpc_id      = var.vpc_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    "Name"                              = "${var.name}-node"
-    "kubernetes.io/cluster/${var.name}" = "owned"
-  }
-}
-
-resource "aws_security_group_rule" "node_ingress_self" {
-  description              = "Allow node to communicate with each other"
-  from_port                = 0
-  protocol                 = "-1"
-  security_group_id        = aws_security_group.node.id
-  source_security_group_id = aws_security_group.node.id
-  to_port                  = 65535
-  type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "node_allow_ssh" {
-  count = length(var.ssh_cidr) != 0 ? 1 : 0
-
-  description       = "The CIDR blocks from which to allow incoming ssh connections to the EKS nodes"
-  from_port         = 22
-  protocol          = "tcp"
-  security_group_id = aws_security_group.node.id
-  cidr_blocks       = [var.ssh_cidr]
-  to_port           = 22
-  type              = "ingress"
-}
-
-resource "aws_security_group_rule" "node_ingress_cluster" {
-  description              = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
-  from_port                = 1025
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.node.id
-  source_security_group_id = aws_security_group.cluster.id
-  to_port                  = 65535
-  type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "node_ingress_cluster_https" {
-  description              = "Allow incoming https connections from the EKS masters security group"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.node.id
-  source_security_group_id = aws_security_group.cluster.id
-  type                     = "ingress"
-}
-
-resource "aws_security_group_rule" "cluster-ingress-node-https" {
-  description              = "Allow pods to communicate with the cluster API Server"
-  type                     = "ingress"
-  from_port                = 443
-  to_port                  = 443
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.cluster.id
-  source_security_group_id = aws_security_group.node.id
+resource "aws_kms_key" "platform-gitlab-kms" {
+  description             = "platform-gitlab-kms"
+  policy                  = "${data.aws_iam_policy_document.platform-gitlab-kms-policy.json}"
 }
 
 resource "aws_eks_cluster" "cluster" {
@@ -110,7 +28,7 @@ resource "aws_eks_cluster" "cluster" {
 
   vpc_config {
     subnet_ids              = flatten([var.subnet_ids])
-    security_group_ids      = [aws_security_group.cluster.id]
+    security_group_ids      = flatten([var.security_group])
     endpoint_private_access = var.cluster_private_access
     endpoint_public_access  = var.cluster_public_access
   }
@@ -118,15 +36,15 @@ resource "aws_eks_cluster" "cluster" {
   encryption_config {
     resources = ["secrets"]
     provider {
-      key_arn = aws_kms_key.eks.arn
+      key_arn = aws_kms_key.platform-gitlab-kms.arn
     }
   }
 
   provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --name ${var.name} --region ${var.region}"
-  }
-}
-
-resource "aws_kms_key" "eks" {
-  description = "EKS Secret Encryption Key"
+    command = <<COMMAND
+      kubectl apply -f aws-auth.yaml \
+      kubectl delete ds aws-node -n kube-system \
+      kubectl apply -f calico.yaml
+      COMMAND
+      }
 }

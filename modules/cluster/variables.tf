@@ -17,9 +17,19 @@ variable "vpc_id" {
   description = "ID of the VPC where to create the cluster resources."
 }
 
+variable "cluster_arn" { #used
+  default     = ""
+  description = "iam role of node"
+}
+
 variable "subnet_ids" {
   default     = []
   description = "A list of VPC subnet IDs which the cluster uses."
+}
+
+variable "security_group" {
+  default     = []
+  description = "A list of security groups which the cluster uses."
 }
 
 variable "iam_role_cluster" { #used
@@ -27,29 +37,9 @@ variable "iam_role_cluster" { #used
   description = "iam role of cluster"
 }
 
-variable "iam_role_node" { #used
-  default     = ""
-  description = "iam role of node"
-}
-
 variable "workstation_cidr" {
   default     = []
   description = "CIDR blocks from which to allow inbound traffic to the Kubernetes control plane."
-}
-
-variable "ssh_cidr" {
-  default     = ""
-  description = "The CIDR blocks from which to allow incoming ssh connections to the EKS nodes."
-}
-
-variable "aws_auth" {
-  default     = ""
-  description = "Grant additional AWS users or roles the ability to interact with the EKS cluster."
-}
-
-variable "permissions_boundary" {
-  default     = ""
-  description = "If provided, all IAM roles will be created with this permissions boundary attached."
 }
 
 variable "node_role_arn" { #used

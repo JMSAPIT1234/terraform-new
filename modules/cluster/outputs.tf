@@ -22,14 +22,3 @@ output "cluster_security_group" {
   value       = aws_security_group.cluster.id
   description = "Security Group between cluster and nodes."
 }
-
-output "node_security_group" {
-  value       = aws_security_group.node.id
-  description = "Security Group to be able to access to the Kubernetes Control Plane and other nodes."
-}
-
-output "node_instance_profile" {
-  value       = aws_iam_instance_profile.node.name
-  description = "IAM Instance Profile which has the required policies to add the node to the cluster."
-}
-
