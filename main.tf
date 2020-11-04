@@ -17,7 +17,7 @@ module "cluster" {
   subnet_ids       = flatten([var.cluster_subnet_ids])
   aws_auth         = var.aws_auth #not_used
   iam_role_cluster = var.iam_role_cluster
-  iam_role_node = var.iam_role_node
+  node_role_arn = var.node_role_arn
   cluster_private_access = var.cluster_private_access
   cluster_public_access = var.cluster_public_access
 }

@@ -22,6 +22,10 @@ variable "cluster_arn" { #used
   description = "iam role of node"
 }
 
+variable "aws_auth" { #used
+  description = "aws_ auth"
+}
+
 variable "subnet_ids" {
   default     = []
   description = "A list of VPC subnet IDs which the cluster uses."

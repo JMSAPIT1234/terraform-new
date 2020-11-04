@@ -74,6 +74,10 @@ variable "node_min_size" { #used
   description = "Minimum size of the worker node AutoScaling Group."
 }
 
+variable "aws_auth" { #used
+  description = "aws_ auth"
+}
+
 variable "node_max_size" { #used
   default     = 2
   description = "Maximum size of the worker node AutoScaling Group."
