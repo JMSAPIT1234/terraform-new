@@ -24,7 +24,7 @@ variable "node_role_arn" { #used
 }
 
 variable "cluster_arn" { #used
-  default     = "arn:aws:iam::414582846745:cluster"
+  default     = "arn:aws:eks:me-south-1:414582846745:cluster"
   description = "cluster arn"
 }
 
