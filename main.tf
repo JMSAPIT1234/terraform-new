@@ -24,8 +24,8 @@ module "cluster" {
 
 module "eks_workers" {
   source                             = "git::https://github.com/cloudposse/terraform-aws-eks-workers.git?ref=0.15.2"
-  namespace                          = "corp"
-  stage                              = "DEV"
+  # namespace                          = "corp"
+  # stage                              = "DEV"
   name                               = var.name
   workers_role_policy_arns           = var.node_role_arn
   use_existing_aws_iam_instance_profile = "true"
