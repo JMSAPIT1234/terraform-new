@@ -22,6 +22,26 @@ module "cluster" {
   cluster_public_access = var.cluster_public_access
 }
 
+resource "aws_security_group" "workstation-ssh-platform" {
+  name        = "workstation-ssh-platform"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.workstation_cidr]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 module "eks_workers" {
   source                             = "git::https://github.com/cloudposse/terraform-aws-eks-workers.git?ref=0.15.2"
   # namespace                          = "corp"
@@ -36,7 +56,7 @@ module "eks_workers" {
   key_name                           = var.key_pair
   allowed_security_groups            = aws_security_group.workstation-ssh-platform.id
   vpc_id                             = var.vpc_id
-  subnet_ids                         = flatten([local.node_subnet_ids])
+  subnet_ids                         = flatten([var.cluster_subnet_ids])
   health_check_type                  = "EC2"  
   enable_monitoring                  = "false"
   min_size                           = var.node_min_size
@@ -44,7 +64,7 @@ module "eks_workers" {
   cluster_name                       = module.cluster.name
   cluster_endpoint                   = module.cluster.endpoint
   cluster_certificate_authority_data = module.cluster.certificate
-  cluster_security_group_id          = module.cluster.node_security_group
+  cluster_security_group_id          = module.cluster.vpc_config[0].cluster_security_group_id
   additional_security_group_ids      = flatten([var.security_group])
   autoscaling_group_tags = {
     "k8s.io/cluster-autoscaler/enabled" = "true"

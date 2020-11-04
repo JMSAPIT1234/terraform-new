@@ -6,14 +6,14 @@ resource "local_file" "kubeconfig" {
   content  = local.kubeconfig
   filename = "~/.kube/config"
 
-  depends_on = [null_resource.output]
+  depends_on = [aws_eks_cluster.cluster]
 }
 
 resource "local_file" "aws_auth" {
   content  = local.aws_auth
   filename = "aws-auth.yaml"
 
-  depends_on = [null_resource.output]
+  depends_on = [aws_eks_cluster.cluster]
 }
 
 # resource "aws_kms_key" "platform-gitlab-kms" {

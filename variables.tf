@@ -64,8 +64,7 @@ variable "node_ami_id" { #used
 }
 
 variable "node_instance_type" { #used
-  type        = list(string)
-  default     = ["t2.large"]
+  default     = "t2.large"
   description = "Instance type of the worker node."
 }
 

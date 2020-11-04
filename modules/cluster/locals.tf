@@ -38,13 +38,13 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: ${aws_iam_role.node.arn}
+    - rolearn: ${var.node_role_arn}
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
         - system:nodes
   mapUsers: |
-    - userarn: ${admin_arn}
+    - userarn: ${var.admin_arn}
       username: admin
       groups:
         - system:masters

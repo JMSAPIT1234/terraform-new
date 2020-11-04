@@ -17,8 +17,3 @@ output "certificate" {
 #   value       = aws_iam_role.node.name
 #   description = "IAM Role which has the required policies to add the node to the cluster."
 # }
-
-output "cluster_security_group" {
-  value       = aws_security_group.cluster.id
-  description = "Security Group between cluster and nodes."
-}
