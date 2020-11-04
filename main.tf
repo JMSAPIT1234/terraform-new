@@ -65,7 +65,7 @@ module "eks_workers" {
   cluster_name                       = module.cluster.name
   cluster_endpoint                   = module.cluster.endpoint
   cluster_certificate_authority_data = module.cluster.certificate
-  cluster_security_group_id          = aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
+  cluster_security_group_id          = aws_eks_cluster.cluster.vpc_id[0].cluster_security_group_id
   additional_security_group_ids      = flatten([var.security_group])
   autoscaling_group_tags = {
     "k8s.io/cluster-autoscaler/enabled" = "true"
