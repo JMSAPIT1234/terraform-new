@@ -33,11 +33,6 @@ variable "admin_arn" { #used
   description = "cluster arn"
 }
 
-variable "cluster_security_group_id" { #used
-  default     = ""
-  description = "cluster security group"
-}
-
 variable "security_group" {
   default     = ["sg-01afdf11c8d8b02ae","sg-0034b6097b20f2934"]
   description = "A list of security groups which the cluster uses."

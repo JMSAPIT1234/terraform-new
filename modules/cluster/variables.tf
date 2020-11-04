@@ -42,11 +42,6 @@ variable "iam_role_cluster" { #used
   description = "iam role of cluster"
 }
 
-variable "cluster_security_group_id" { #used
-  default     = ""
-  description = "cluster security group"
-}
-
 variable "admin_arn" { #used
   default     = ""
   description = "cluster arn"

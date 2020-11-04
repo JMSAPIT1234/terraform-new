@@ -14,11 +14,6 @@ output "cluster_certificate" {
 }
 
 output "cluster_security_group" {
-  value       = module.cluster.cluster_security_group
-  description = "Security Group between cluster and nodes."
-}
-
-output "node_security_group" {
-  value       = module.cluster.node_security_group
-  description = "Security Group to be able to access to the Kubernetes Control Plane and other nodes."
+  value       = module.cluster.vpc_config[0].cluster_security_group_id
+  description = "Certificate used to authenticate to the Kubernetes Controle Plane."
 }
