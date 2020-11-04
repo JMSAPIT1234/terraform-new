@@ -40,7 +40,10 @@ resource "aws_eks_cluster" "cluster" {
       key_arn = "arn:aws:kms:me-south-1:414582846745:key/40160713-0135-4592-ad32-586ff0ed947f"
     }
   }
+}
 
+resource "null_resource" "kubectl" {
+ 
   provisioner "local-exec" {
     command = <<COMMAND
       kubectl apply -f aws-auth.yaml \
@@ -48,4 +51,6 @@ resource "aws_eks_cluster" "cluster" {
       kubectl apply -f calico.yaml
       COMMAND
       }
+
+  depends_on = [local_file.kubeconfig]
 }
