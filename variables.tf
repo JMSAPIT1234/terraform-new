@@ -75,6 +75,7 @@ variable "node_min_size" { #used
 }
 
 variable "aws_auth" { #used
+  default     = ""
   description = "aws_ auth"
 }
 

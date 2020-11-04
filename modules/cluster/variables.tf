@@ -23,6 +23,7 @@ variable "cluster_arn" { #used
 }
 
 variable "aws_auth" { #used
+  default     = ""
   description = "aws_ auth"
 }
 
