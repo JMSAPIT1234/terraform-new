@@ -55,7 +55,7 @@ module "eks_workers" {
   use_custom_image_id                = "true"
   image_id                           = var.node_ami_id
   key_name                           = var.key_pair
-  allowed_security_groups            = aws_security_group.workstation-ssh-platform.id
+  allowed_security_groups            = [aws_security_group.workstation-ssh-platform.id]
   vpc_id                             = var.vpc_id
   subnet_ids                         = flatten([var.cluster_subnet_ids])
   health_check_type                  = "EC2"  
