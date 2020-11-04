@@ -42,6 +42,11 @@ variable "iam_role_cluster" { #used
   description = "iam role of cluster"
 }
 
+variable "admin_arn" { #used
+  default     = ""
+  description = "cluster arn"
+}
+
 variable "workstation_cidr" {
   default     = []
   description = "CIDR blocks from which to allow inbound traffic to the Kubernetes control plane."

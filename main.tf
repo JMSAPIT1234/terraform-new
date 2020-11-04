@@ -18,6 +18,7 @@ module "cluster" {
   aws_auth         = var.aws_auth #not_used
   iam_role_cluster = var.iam_role_cluster
   node_role_arn = var.node_role_arn
+  admin_arn        = var.admin_arn
   cluster_private_access = var.cluster_private_access
   cluster_public_access = var.cluster_public_access
 }
@@ -64,7 +65,7 @@ module "eks_workers" {
   cluster_name                       = module.cluster.name
   cluster_endpoint                   = module.cluster.endpoint
   cluster_certificate_authority_data = module.cluster.certificate
-  cluster_security_group_id          = module.cluster.vpc_config[0].cluster_security_group_id
+  cluster_security_group_id          = module.cluster.vpc_id[0].cluster_security_group_id
   additional_security_group_ids      = flatten([var.security_group])
   autoscaling_group_tags = {
     "k8s.io/cluster-autoscaler/enabled" = "true"
